@@ -41,4 +41,15 @@ class PostRepository
         $post = Post::find($id);
         return $post ? $post->delete() : false;
     }
+  // approve post
+    public function approve($id)
+    {
+        $post = Post::find($id);
+        if ($post) {
+            $post->status = 'approved';
+            $post->save();
+            return $post;
+        }
+        return null;
+    }
 }

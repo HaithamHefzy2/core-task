@@ -42,4 +42,9 @@ class PostService
     {
         return $this->postRepository->delete($id);
     }
+    // approve a post
+    public function approvePost($id)
+    {
+        return $this->postRepository->approve($id);
+    }
 }

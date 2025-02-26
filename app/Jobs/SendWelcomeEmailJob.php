@@ -24,7 +24,7 @@ class SendWelcomeEmailJob implements ShouldQueue
     // Handle sending of the welcome email
     public function handle()
     {
-        Mail::raw('Welcome to our platform!', function ($message) {
+        Mail::raw('Welcome!', function ($message) {
             $message->to($this->user->email)
                 ->subject('Welcome!');
         });

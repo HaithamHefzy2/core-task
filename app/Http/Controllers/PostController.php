@@ -53,9 +53,12 @@ class PostController extends Controller
             $post->categories()->sync($data['categories']);
         }
 
+        event(new \App\Events\PostSubmitted($post));
+
+
         // save the log
         activity()
-            ->causedBy(auth()->api()->user())
+            ->causedBy(auth()->user())
             ->performedOn($post)
             ->withProperties(['title' => $post->title])
             ->log('Post Created');
@@ -122,5 +125,25 @@ class PostController extends Controller
         return $this->postService->deletePost($id)
             ? $this->successResponse([], 'Post deleted successfully')
             : $this->errorResponse('Post not found', 404);
+    }
+
+    /**
+     * Approve the specified post.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function approve($id)
+    {
+        $post = $this->postService->approvePost($id);
+
+        if (!$post) {
+            return $this->errorResponse('Post not found', 404);
+        }
+
+       // send Notification
+        event(new \App\Events\PostApproved($post));
+
+        return $this->successResponse(new PostResource($post), 'Post approved ');
     }
 }

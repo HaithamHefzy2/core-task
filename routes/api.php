@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Posts management routes
     Route::apiResource('posts', PostController::class);
+    Route::put('posts/{post}/approve', [PostController::class, 'approve']);
 
     // Categories management routes
     Route::apiResource('categories', CategoryController::class);
